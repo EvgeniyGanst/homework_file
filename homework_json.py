@@ -18,13 +18,11 @@ def read_json(file_path, word_min_len=6, top_words_amt=10):
 
 
     news_str = " ".join(new_list)
-    sorted(news_str)
     news_list = news_str.split()
     list_word_len = []
     for i in news_list:
         if len(i) > word_min_len:
             list_word_len.append(i)
-    list_word_len.sort(key=len)
     word_set = set(list_word_len)
     new_list_word = list(word_set)
     new_list_word.sort(key=len, reverse=True)
