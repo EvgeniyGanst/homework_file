@@ -1,5 +1,6 @@
 import json
 from pprint import pprint
+from collections import Counter
 
 def read_json(file_path, word_min_len=6, top_words_amt=10):
     """
@@ -10,24 +11,23 @@ def read_json(file_path, word_min_len=6, top_words_amt=10):
 
 
     dict_news = json_data["rss"]["channel"]["items"]
-
     new_list = []
     for rows in dict_news:
         row = rows["description"]
         new_list.append(row)
 
+    news_str = " ".join(new_list)#делаем из списка строку
+    news_list = news_str.split()#разбиваем строку в список слов
 
-    news_str = " ".join(new_list)
-    news_list = news_str.split()
     list_word_len = []
     for i in news_list:
         if len(i) > word_min_len:
             list_word_len.append(i)
-    word_set = set(list_word_len)
-    new_list_word = list(word_set)
-    new_list_word.sort(key=len, reverse=True)
-    pprint(new_list_word[0:top_words_amt])
-
-
+    new_cnt = Counter(list_word_len).most_common(top_words_amt)
+    top_word = list(dict(new_cnt).keys())
+    return top_word
+    
+    
+    
 if __name__ == '__main__':
     print(read_json(r'D:\homework_file\newsafr.json'))
